@@ -72,11 +72,31 @@ WSGI_APPLICATION = 'event.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+from pymongo.mongo_client import MongoClient
+
+uri = "mongodb+srv://13miguegonza2005:FirstPassword@cluster0.wk3se75.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+# Create a new client and connect to the server
+client = MongoClient(uri)
+# Send a ping to confirm a successful connection
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
+
+import mongoengine
+
+mongoengine.connect(db='Proyecto_SID2', host='@cluster0.wk3se75.mongodb.net', username='13miguegonza2005',
+                    password='FirstPassword')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'xe',
+        'USER': 'System',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': '1521',
     }
 }
 
