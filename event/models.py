@@ -1,155 +1,6 @@
 from django.db import models
-
-"""---------------------Modelos de Mongo-------------------"""
-
-
-class User(models.Model):
-    """
-    Modelo para representar los usuarios
-
-    Atributos:
-        id (IntegerField): Identificador único del usuario.
-        username (CharField): Nombre de usuario.
-        fullName (CharField): Nombre descriptivo del usuario.
-        relationship (CharField): relación del usuario.
-        email (CharField): correo electronico del usuario.
-        city (CharField): ciudad del usuario.
-    """
-
-    id = models.AutoField(
-        primary_key=True
-    )
-
-    username = models.CharField(
-        max_length=120
-    )
-
-    fullName = models.CharField(
-        max_length=240
-    )
-
-    relationship = models.CharField(
-        max_length=120
-    )
-
-    email = models.EmailField(
-        max_length=120
-    )
-
-    city = models.ForeignKey(
-        City,
-        on_delete=models.CASCADE,
-    )
-
-    def __str__(self):
-        return self.username
-
-
-class Faculty(models.Model):
-    """
-    Modelo para representar las facultades.
-
-    Atributos:
-        id (IntegerField): Identificador único de la facultad.
-        name (CharField): Nombre descriptivo de la facultad.
-    """
-
-    id = models.AutoField(
-        primary_key=True
-    )
-
-    name = models.CharField(
-        max_length=255,
-    )
-
-    def __str__(self):
-        return self.nombre
-
-
-class Event(models.Model):
-    """
-    Modelo para representar los eventos
-
-    Atributos:
-        id (IntegerField): Identificador único del evento.
-        title (CharField): titulo descriptivo del evento.
-        description (CharField): descripción del evento.
-        categories (CharField): categorias del evento.
-        date (CharField): fecha de realización del evento.
-        location (CharField): ubicación del evento.
-    """
-
-    id = models.AutoField(
-        primary_key=True
-    )
-
-    title = models.CharField(
-        max_length=255,
-    )
-
-    description = models.CharField(
-        max_length=512,
-    )
-
-    categories = models.ManyToManyField(Category)
-
-    date = models.DateTimeField()
-
-    location = models.ForeignKey(
-        Location,
-        on_delete=models.CASCADE,
-    )
-    organizingFaculties = models.ManyToManyField(
-        Faculty,
-        related_name='organizing_faculties'
-    )
-
-    organizingPrograms = models.ManyToManyField(
-        Programa,
-        related_name='organizing_programs'
-    )
-
-    speakers = models.ManyToManyField(
-        User,
-        related_name='speakers'
-    )
-
-    attendees = models.ManyToManyField(
-        User,
-        related_name='attendees'
-    )
-
-    comments = models.ManyToManyField(
-        Comment,
-        related_name='comments'
-    )
-
-    def __str__(self):
-        return self.title
-
-
-class Program(models.Model):
-    """
-    Modelo para representar los programas académicos.
-
-    Atributos:
-        id (IntegerField): Identificador único del programa.
-        name (CharField): Nombre descriptivo del programa.
-        facultyId (IntegerField): Identificador único de la facultad a la que pertenece.
-    """
-
-    id = models.AutoField(
-        primary_key=True
-    )
-
-    name = models.CharField(
-        max_length=255,
-    )
-
-    facultyId = models.ForeignKey(
-        'Facultad', on_delete=models.CASCADE
-    )
-
+import mongoengine
+from mongoengine import *
 
 """"------------------------Modelos de Oracle-------------------------------------------"""
 
@@ -272,7 +123,7 @@ class EmployeeType(models.Model):
     )
 
 
-class Faculties(models.Model):
+class Faculty(models.Model):
     """
     Modelo para representar las facultades.
 
@@ -348,7 +199,7 @@ class Employee(models.Model):
     )
 
     facultyId = models.ForeignKey(
-        Faculties,
+        Faculty,
         on_delete=models.CASCADE
     )
 
@@ -383,7 +234,7 @@ class Area(models.Model):
     )
 
     facultyId = models.ForeignKey(
-        Faculties,
+        Faculty,
         on_delete=models.CASCADE
     )
 
@@ -393,7 +244,7 @@ class Area(models.Model):
     )
 
 
-class Programas(models.Model):
+class Programs(models.Model):
     """
     Modelo para representar los programas académicos.
 
@@ -414,4 +265,138 @@ class Programas(models.Model):
     areaId = models.ForeignKey(
         Area,
         on_delete=models.CASCADE
+    )
+
+
+"""---------------------Modelos de Mongo-------------------"""
+
+
+class User(Document):
+    """
+    Modelo para representar los usuarios
+
+    Atributos:
+        username (CharField): Nombre de usuario.
+        fullName (CharField): Nombre descriptivo del usuario.
+        relationship (CharField): relación del usuario.
+        email (CharField): correo electronico del usuario.
+        city (CharField): ciudad del usuario.
+    """
+
+    username = StringField(
+        max_length=120
+    )
+
+    fullName = StringField(
+        max_length=240
+    )
+
+    relationship = StringField(
+        max_length=120
+    )
+
+    email = EmailField(
+        max_length=120
+    )
+
+    city_id = StringField(
+
+    )
+
+    def get_city(self):
+        city = City.objects.get(id=self.city_id)
+        return city
+
+
+class Comment(Document):
+    """
+    Modelo para representar los comentarios.
+
+    Atributos:
+        text (CharField): Texto del comentario.
+        userId (IntegerField): Identificador del usuario al cual pertenece el comentario.
+    """
+    text = StringField(
+        required=True
+    )
+
+    userId = ReferenceField(
+        User,
+        reverse_delete_rule=mongoengine.CASCADE
+    )
+
+
+class Category(Document):
+    """
+    Modelo para representar las categorías.
+
+    Atributos:
+        name (StringField): Nombre de la categoría.
+    """
+    name = StringField(
+        max_length=120
+    )
+
+
+class Faculty(Document):
+    """
+    Modelo para representar las facultades.
+
+    Atributos:
+        name (CharField): Nombre descriptivo de la facultad.
+    """
+    name = StringField(max_length=255)
+
+
+class Event(Document):
+    """
+    Modelo para representar los eventos
+
+    Atributos:
+        title (CharField): titulo descriptivo del evento.
+        description (CharField): descripción del evento.
+        categories (CharField): categorias del evento.
+        date (CharField): fecha de realización del evento.
+        location (CharField): ubicación del evento.
+    """
+    title = StringField(
+        max_length=255
+    )
+
+    description = StringField(
+        max_length=512
+    )
+
+    categories = ListField(ReferenceField
+                           (Category,
+                            reverse_delete_rule=NULLIFY)
+                           )
+
+    date = DateTimeField(
+
+    )
+
+    location_id = StringField()
+
+    def get_location(self):
+        # Realiza una consulta a la base de datos de Oracle para obtener la ubicación
+        location = Location.objects.get(id=self.location_id)
+        return location
+
+
+class Program(Document):
+    """
+    Modelo para representar los programas académicos.
+
+    Atributos:
+        name (CharField): Nombre descriptivo del programa.
+        facultyId (IntegerField): Identificador único de la facultad a la que pertenece.
+    """
+    name = StringField(
+        max_length=255
+    )
+
+    facultyId = ReferenceField(
+        Faculty,
+        reverse_delete_rule=mongoengine.CASCADE
     )
