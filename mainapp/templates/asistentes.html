@@ -1,0 +1,53 @@
+{% extends "root.html" %}
+{% block title %}Editar Contrato{% endblock title %}
+{% load static %}
+
+{% block static %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/asistentes.css' %}">
+{% endblock %}
+
+
+{% block actual_patch %}
+    <h2>Asistentes y conferencistas</h2>
+{% endblock actual_patch %}
+
+{% block breadcrumb-items %} 
+    <li class="breadcrumb-item">
+        <a href="">Crear </a>
+    </li>
+{% endblock breadcrumb-items %}
+
+{% block content %} 
+<div class = "container">
+<form class="form" action="" method = "POST"> {%csrf_token%}
+    <div class="header">Crear Asistentes </div>
+    <div class="inputs">
+       
+        <label for="lugar">Usuario</label>
+        <input placeholder="Nobre de usuario" class="input" type="docente" name="docente"  >
+
+    
+        <label for="lugar">Nombre</label>
+        <input placeholder="Nombre completo" class="input" type="docente" name="docente"  >   
+
+        <label for="lugar">Relacion con la institucion</label>
+        <select id="tipo_contrato" name="tipo_contrato" type ="tipo_contrato" required>
+            <option value="">Selecciona el tipo de relacion</option>
+            {% for tContrato in tipoContrato %}
+                <option value="">{{ tContrato.tipo }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="lugar">Ciudad</label>
+        <input placeholder="Nombre" class="input" type="docente" name="docente"  >
+        <input placeholder="Departamento" class="input" type="docente" name="docente"  >
+        <input placeholder="Pais" class="input" type="docente" name="docente"  >
+
+
+        
+    <button class="sigin-btn">Enviar</button>
+    </div>
+</form>
+</div>
+{% endblock %}

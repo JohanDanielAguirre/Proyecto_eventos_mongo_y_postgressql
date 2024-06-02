@@ -1,0 +1,40 @@
+{% extends "root.html" %}
+{% block title %}Editar Contrato{% endblock title %}
+{% load static %}
+
+{% block static %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/comentarios.css' %}">
+{% endblock %}
+
+
+{% block actual_patch %}
+    <h2>Asistentes y conferencistas</h2>
+{% endblock actual_patch %}
+
+{% block breadcrumb-items %} 
+    <li class="breadcrumb-item">
+        <a href="">Comentario </a>
+    </li>
+{% endblock breadcrumb-items %}
+
+{% block content %} 
+<div class = "container">
+<form class="form" action="" method = "POST"> {%csrf_token%}
+    <div class="header">Agregar Comentario </div>
+    <div class="inputs">
+       
+        <label for="lugar">Usuario</label>
+        <input placeholder="Nobre de usuario" class="input" type="docente" name="docente"  >
+
+    
+        <label for="lugar">Comentario</label>
+        <textarea placeholder="Comentario" class="input" name="comentario" id="comentario" rows="4" cols="50"></textarea> 
+
+    
+        
+    <button class="sigin-btn">Enviar</button>
+    </div>
+</form>
+</div>
+{% endblock %}

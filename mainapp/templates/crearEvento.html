@@ -1,0 +1,60 @@
+{% extends "root.html" %}
+{% block title %}Editar Contrato{% endblock title %}
+{% load static %}
+
+{% block static %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/editContract.css' %}">
+{% endblock %}
+
+
+{% block actual_patch %}
+    <h2>Editar Contratos</h2>
+{% endblock actual_patch %}
+
+{% block breadcrumb-items %} 
+    <li class="breadcrumb-item">
+        <a href="">Crear Evento</a>
+    </li>
+{% endblock breadcrumb-items %}
+
+{% block content %} 
+<div class = "container">
+<form class="form" action="" method = "POST"> {%csrf_token%}
+    <div class="header">Crear Evento</div>
+    <div class="inputs">
+       
+        <input placeholder="titulo" class="input" type="txtCodigo" name="txtCodigo"  >
+
+        <label for="lugar">Fecha</label>
+        <input placeholder="fecha_elaboracion" class="input" type="date" name="fecha_elaboracion" value="{{ contract.fecha_elaboracion|date:'Y-m-d' }}">
+        
+        <label for="lugar">Lugar</label>
+        <input placeholder="lugar-nombre" class="input" type="docente" name="docente"  >
+        <input placeholder="direccion" class="input" type="docente" name="docente"  >
+       
+        <label for="lugar">Ciudad</label>
+        <input placeholder="Nombre" class="input" type="docente" name="docente"  >
+        <input placeholder="Departamento" class="input" type="docente" name="docente"  >
+        <input placeholder="Pais" class="input" type="docente" name="docente"  >
+
+        <label for="lugar">Categoria</label>
+        <select id="tipo_contrato" name="tipo_contrato" type ="tipo_contrato" required>
+            <option value="">Selecciona la categoria</option>
+            {% for tContrato in tipoContrato %}
+                <option value="{{ tContrato.codigo }}">{{ tContrato.tipo }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="lugar">Asistentes</label>
+        <select id="estado_contrato" name="estado_contrato" type ="estado_contrato" required>
+            <option value="">Facultad organizadora</option>
+            {% for estados in estado %}
+                <option value="{{ estados.id }}">{{ estados.nombre }}</option>
+            {% endfor %}
+        </select>
+    <button class="sigin-btn">Enviar</button>
+    </div>
+</form>
+</div>
+{% endblock %}
