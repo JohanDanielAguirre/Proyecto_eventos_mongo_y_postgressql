@@ -9,4 +9,5 @@ urlpatterns = [
     path('eventos/', EventsView.as_view(), name='evento'),
     path('crear_evento/', EventForm.as_view(), name='crear_evento'),
     path("user/<str:id>/", UserDetail.as_view(), name="user_detail"),
+    path('evento/<str:event_id>/', EventDetailView.as_view(), name='event_detail'),
 ]
