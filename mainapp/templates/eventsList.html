@@ -4,7 +4,7 @@
 
 {% block static %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/eventos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/eventosListStyle.css' %}">
 {% endblock %}
 
 {% block actual_patch %}
@@ -19,28 +19,30 @@
 
 {% block content %}
 <div class="container">
-    <div class="wrapperProgram">
+    <div class="wrapperEvent">
         {% for evento in eventos %}
-            <div id="button{{ evento.codigo }}" type="button" onclick="showInfo('{{ evento.codigo }}')" class="event">
-                <img src="{{ evento.url_image }}" alt="{{ evento.nombre }}">
+            <div id="button{{ evento }}" type="button" onclick="showInfo('{{ evento }}')" class="event">
                 <div class="subcontainer1">
                     <div class="subcontainer2">
                         <div class="left">
-                            <h3>{{ evento.nombre }}</h3>
+                            <h3>{{ evento.title }}</h3>
+                            <p>{{ evento.description }}</p>
                         </div>
                         <div class="right">
                             <h2>✅</h2>
+                            <p>{{ evento.date }}</p>
                         </div>
                     </div>
-                   
                 </div>
             </div>
-            <div id="info{{ evento.id }}" class="info" style="display: none;">
-                <img src="{{ evento.url_image }}" alt="{{ evento.nombre }}">
-                <h3>{{ evento.nombre }}</h3>
-                <div class="text">{{ evento.descripcion }}</div>    
+            <div id="info{{ evento }}" class="info" style="display: none;">
+                <h3>{{ evento.title}}</h3>
+                <div class="text">{{ evento.description }}</div>
             </div>
         {% endfor %}
     </div>
+    <div class="wrapperInfo" id="wrapperInfo">
+    </div>
 </div>
+<script src="{% static 'js/eventsScripts.js' %}"></script>
 {% endblock %}
