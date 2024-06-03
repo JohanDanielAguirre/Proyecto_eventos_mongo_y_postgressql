@@ -11,6 +11,11 @@ class EventForm(forms.Form):
         fecha: forms.DateInput(attrs={'class': 'form-control datepicker'}),
     }
 
+class LugarEventoForm(forms.Form):
+    nombre = forms.CharField(max_length=100, label="Nombre del Lugar")
+    direccion = forms.CharField(widget=forms.Textarea, label="Dirección")
+    ciudad = forms.CharField(max_length=100, label="Ciudad")
+
 class UserForm(forms.Form):
     id = forms.CharField(max_length=100)
     nombreUsuario = forms.CharField(max_length=100)
