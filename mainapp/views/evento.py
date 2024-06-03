@@ -20,6 +20,7 @@ class EventsView(View):
         eventos = list(eventos_collection.find())
 
         # Pasar los eventos a la plantilla
+        client.close()
         return render(request, 'eventsList.html', {'eventos': eventos})
 
     def post(self, request):
@@ -45,10 +46,10 @@ class EventForm(View):
         if form.is_valid():
             solicitud = form.cleaned_data
             # <process form cleaned data>
-            my_client = MongoClient(settings.MONGO_URI)
+            client = MongoClient(settings.MONGO_URI)
 
             # First define the database name
-            dbname = my_client.get_database('Proyecto_SID2')
+            dbname = client.get_database('Proyecto_SID2')
 
             # Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection
             collection_name = dbname["events"]
@@ -61,6 +62,7 @@ class EventForm(View):
                 "place": solicitud.get('place'),
             }
             collection_name.insert_one(event)
+            client.close()
             return redirect("evento")
 
         return render(request, "eventForm.html", {"form": form})
