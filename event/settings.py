@@ -76,9 +76,9 @@ WSGI_APPLICATION = 'event.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-uri = "mongodb+srv://13miguegonza2005:FirstPassword@cluster0.wk3se75.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+MONGO_URI = "mongodb+srv://13miguegonza2005:FirstPassword@cluster0.wk3se75.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 # Create a new client and connect to the server
-client = MongoClient(uri)
+client = MongoClient(MONGO_URI)
 # Send a ping to confirm a successful connection
 try:
     client.admin.command('ping')
@@ -96,7 +96,7 @@ DATABASES = {
         'NAME': 'xe',
         'USER': 'PROYECTOFINAL',
         'PASSWORD': 'proyecto',
-        'HOST': 'localhost',
+        'HOST': '192.168.10.178',
         'PORT': '1521',
     }
 }
