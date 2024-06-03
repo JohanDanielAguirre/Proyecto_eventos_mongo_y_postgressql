@@ -56,10 +56,10 @@ class EventForm(View):
 
             # let's create two documents
             event = {
-                "title": solicitud.get('title'),
-                "description": solicitud.get('description'),
-                "date": solicitud.get('date'),
-                "place": solicitud.get('place'),
+                "title": solicitud.get('titulo'),
+                "description": solicitud.get('descripcion'),
+                "date": solicitud.get('fecha'),
+                "place": solicitud.get('lugar'),
             }
             collection_name.insert_one(event)
             client.close()
