@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mainapp',
 ]
 
 MIDDLEWARE = [
@@ -93,9 +94,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
         'NAME': 'xe',
-        'USER': 'ProyectoFinal',
+        'USER': 'PROYECTOFINAL',
         'PASSWORD': 'proyecto',
-        'HOST': 'localhost',
+        'HOST': '192.168.10.178',
         'PORT': '1521',
     }
 }
