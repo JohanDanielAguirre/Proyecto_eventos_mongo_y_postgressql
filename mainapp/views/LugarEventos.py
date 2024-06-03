@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from mainapp.forms import LugarEventoForm
+from mainapp.forms import EventLocationForm
 from pymongo import MongoClient
 from django.conf import settings
 
-class LugarEventoView(View):
-    form_class = LugarEventoForm
+class EventLocationView(View):
+    form_class = EventLocationForm
     initial = {}
-    template_name = "lugar_evento_form.html"
+    template_name = "locationsForm.html"
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
@@ -24,12 +24,12 @@ class LugarEventoView(View):
             collection_name = dbname["lugares_eventos"]
 
             # Crear documento
-            lugar_evento = {
-                "nombre": solicitud.get('nombre'),
-                "direccion": solicitud.get('direccion'),
-                "ciudad": solicitud.get('ciudad'),
+            event_location = {
+                "name": solicitud.get('nombre'),
+                "adress": solicitud.get('direccion'),
+                "city": solicitud.get('ciudad'),
             }
-            collection_name.insert_one(lugar_evento)
+            collection_name.insert_one(event_location)
 
             return redirect("lugar_evento")
 
