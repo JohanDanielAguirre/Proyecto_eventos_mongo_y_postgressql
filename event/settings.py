@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import mongoengine
+from pymongo.mongo_client import MongoClient
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -73,7 +75,6 @@ WSGI_APPLICATION = 'event.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-from pymongo.mongo_client import MongoClient
 
 uri = "mongodb+srv://13miguegonza2005:FirstPassword@cluster0.wk3se75.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 # Create a new client and connect to the server
@@ -85,7 +86,6 @@ try:
 except Exception as e:
     print(e)
 
-import mongoengine
 
 mongoengine.connect(db='Proyecto_SID2', host='@cluster0.wk3se75.mongodb.net', username='13miguegonza2005',
                     password='FirstPassword')
@@ -96,7 +96,7 @@ DATABASES = {
         'NAME': 'xe',
         'USER': 'PROYECTOFINAL',
         'PASSWORD': 'proyecto',
-        'HOST': '192.168.10.178',
+        'HOST': 'localhost',
         'PORT': '1521',
     }
 }
