@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from pymongo import MongoClient
 from django.conf import settings
+from bson import ObjectId
 
 
 class EventsView(View):
@@ -16,8 +17,12 @@ class EventsView(View):
         db = client.get_database('Proyecto_SID2')
         eventos_collection = db['events']
 
-        # Obtener todos los documentos de la colección
+        # Obtener todos los documentos de la colección y convertir _id a string
         eventos = list(eventos_collection.find())
+        for evento in eventos:
+            evento['id'] = str(evento['_id'])
+            # Eliminar el campo _id para evitar el error de plantilla
+            del evento['_id']
 
         # Pasar los eventos a la plantilla
         return render(request, 'eventsList.html', {'eventos': eventos})

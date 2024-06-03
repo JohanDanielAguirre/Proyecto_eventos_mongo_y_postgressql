@@ -1,8 +1,8 @@
-# views.py
 from django.views import View
-from django.shortcuts import render, get_object_or_404
-from pymongo import MongoClient
+from django.shortcuts import redirect, render
 from django.conf import settings
+from pymongo import MongoClient
+from bson import ObjectId
 
 
 class EventDetailView(View):
@@ -12,25 +12,26 @@ class EventDetailView(View):
         db = client.get_database('Proyecto_SID2')
         eventos_collection = db['events']
 
-        # Obtener el documento específico del evento
-        evento = eventos_collection.find_one({'_id': event_id})
+        # Obtener el documento del evento usando ObjectId
+        evento = eventos_collection.find_one({'_id': ObjectId(event_id)})
+        if evento:
+            evento['id'] = str(evento['_id'])
+            # Eliminar el campo _id para evitar el error de plantilla
+            del evento['_id']
+            print(evento.get('descripcion', ''))
+            # Pasar los campos del evento como contexto a la plantilla
+            return render(request, 'informEvent.html', {
+                'titulo': evento.get('title', ''),
+                'categorias': evento.get('categories', []),
+                'fecha': evento.get('date', ''),
+                'lugar': evento.get('lugar', ''),
+                'descripcion': evento.get('description', ''),
+                'programas': evento.get('programs', []),
+                'facultades': evento.get('facultades', []),
+                'conferencistas': evento.get('conferencistas', []),
+                'asistentes': evento.get('asistentes', []),
+                'comentarios': evento.get('comments', []),
+            })
 
-        if not evento:
-            # Manejo de evento no encontrado
-            return render(request, '404.html', {})
-
-        # Pasar los datos del evento a la plantilla
-        context = {
-            'titulo': evento.get('titulo', ''),
-            'categorias': evento.get('categorias', []),
-            'fecha': evento.get('fecha', ''),
-            'lugar': evento.get('lugar', ''),
-            'descripcion': evento.get('descripcion', ''),
-            'programas': evento.get('programas', []),
-            'facultades': evento.get('facultades', []),
-            'conferencistas': evento.get('conferencistas', []),
-            'asistentes': evento.get('asistentes', []),
-            'comentarios': evento.get('comentarios', [])
-        }
-
-        return render(request, 'eventInform.html', context)
+        # Manejo del caso en que el evento no se encuentre
+        # Puedes agregar aquí una redirección o un mensaje de error

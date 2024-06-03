@@ -21,22 +21,24 @@
 <div class="container">
     <div class="wrapperEvent">
         {% for evento in eventos %}
-            <div id="button{{ evento }}" type="button" onclick="showInfo('{{ evento }}')" class="event">
-                <div class="subcontainer1">
-                    <div class="subcontainer2">
-                        <div class="left">
-                            <h3>{{ evento.title }}</h3>
-                            <p>{{ evento.description }}</p>
-                        </div>
-                        <div class="right">
-                            <h2>✅</h2>
-                            <p>{{ evento.date }}</p>
+            <a href="{% url 'event_detail' evento.id %}" class="event-link">
+                <div id="button{{ evento.id }}" type="button" class="event">
+                    <div class="subcontainer1">
+                        <div class="subcontainer2">
+                            <div class="left">
+                                <h3>{{ evento.title }}</h3>
+                                <p>{{ evento.description }}</p>
+                            </div>
+                            <div class="right">
+                                <h2>✅</h2>
+                                <p>{{ evento.date }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="info{{ evento }}" class="info" style="display: none;">
-                <h3>{{ evento.title}}</h3>
+            </a>
+            <div id="info{{ evento.id }}" class="info" style="display: none;">
+                <h3>{{ evento.title }}</h3>
                 <div class="text">{{ evento.description }}</div>
             </div>
         {% endfor %}
