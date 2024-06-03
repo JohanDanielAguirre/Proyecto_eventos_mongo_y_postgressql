@@ -1,0 +1,53 @@
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+}
+
+.generalContent {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Estilos específicos para cada subcontenedor */
+.descriptrionContent h2,
+.organizersContent h2,
+.speakersContent h2,
+.assistantsContent h2,
+.commentsContent h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.generalContent p {
+  margin-bottom: 10px;
+}
+
+/* Estilos para el contenedor del título */
+.titleContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.titleContent h2,
+.titleContent p {
+  align-self: flex-start;
+}
+
+.titleContent .dateAndPlace {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Estilos para los demás contenedores */
+.descriptrionContent,
+.organizersContent,
+.speakersContent,
+.assistantsContent,
+.commentsContent {
+  margin-bottom: 20px;
+}

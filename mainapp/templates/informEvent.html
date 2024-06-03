@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información del evento</title>
+    <link rel="stylesheet" href="{% static 'CSS/eventInformStyle.css' %}">
+</head>
+<body>
+    <div class="generalContent">
+        <div class="titleContent">
+            <h2>{{ titulo }}</h2>
+            <p>{{ categorias | join:", " }}</p>
+            <p>{{ fecha }}</p>
+            <h3>{{ lugar }}</h3>
+        </div>
+
+        <div class="descriptrionContent">
+            <h2>Descripción</h2>
+            <p>{{ descripcion }}</p>
+        </div>
+
+        <div class="organizersContent">
+            <h2>Organizadores</h2>
+            {% for programa in programas %}
+            <li>
+                <strong>Nombre:</strong> {{ programa.name }}<br>
+            </li>
+            {% endfor %}
+            {% for facultad in facultades %}
+            <li>
+                <strong>Nombre:</strong> {{ facultad.name }}<br>
+            </li>
+            {% endfor %}
+        </div>
+
+        <div class="speakersContent">
+            <h2>Conferencistas</h2>
+            {% for conferencista in conferencistas %}
+            <li>
+                <strong>Nombre:</strong> {{ conferencista.fullname }}<br>
+                <strong>Relación:</strong> {{ conferencista.relationship }}<br>
+            </li>
+            {% endfor %}
+        </div>
+
+        <div class="assistantsContent">
+            <h2>Asistentes</h2>
+            {% for asistente in asistentes %}
+            <li>
+                <strong>Nombre:</strong> {{ asistente.fullname }}<br>
+                <strong>Relación:</strong> {{ asistente.relationship }}<br>
+            </li>
+            {% endfor %}
+        </div>
+
+        <div class="commentsContent">
+            <h2>Comentarios</h2>
+            {% for comentario in comentarios %}
+            <li>
+                <strong>Asistente:</strong> {{ comentario.userId }}<br>
+                <strong>Comentario:</strong> {{ comentario.text }}<br>
+            </li>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
