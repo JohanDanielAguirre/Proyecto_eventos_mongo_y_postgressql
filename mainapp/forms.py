@@ -33,4 +33,11 @@ class UserForm(forms.Form):
         choices=[('profesor', 'Profesor'), ('estudiante', 'Estudiante'), ('graduado', 'Graduado')
                  , ('empresario', 'Empresario'), ('administrativo', 'Administrativo'), ('directivo', 'Directivo')]))
     email = forms.CharField(max_length=100)
-    ciudad = forms.CharField(max_length=100)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        client = MongoClient(settings.MONGO_URI)
+        dbname = client.get_database('Proyecto_SID2')
+        collection = dbname["cities"]
+        cities = [(city["_id"], city["nombre"]) for city in collection.find()]
+        self.fields["ciudad"] = forms.ChoiceField(choices=cities, label="Ciudad")
+        client.close()
