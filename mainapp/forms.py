@@ -6,7 +6,7 @@ from pymongo import MongoClient
 class EventForm(forms.Form):
     titulo = forms.CharField(max_length=100)
     descripcion = forms.CharField(max_length=100)
-    categoria = forms.CharField(max_length=100)
+    categoria = forms.CharField(max_length=100, label="Categoria (separada por , )")
     fecha = forms.DateInput()
 
     def __init__(self, *args, **kwargs):
