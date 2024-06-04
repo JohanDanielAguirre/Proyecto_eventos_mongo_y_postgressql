@@ -5,6 +5,13 @@ from pymongo import MongoClient
 from bson import ObjectId
 
 
+from django.views import View
+from django.shortcuts import redirect, render
+from django.conf import settings
+from pymongo import MongoClient
+from bson import ObjectId
+
+
 class EventDetailView(View):
     def get(self, request, event_id):
         # Conectar a MongoDB
@@ -15,19 +22,25 @@ class EventDetailView(View):
         # Obtener el documento del evento usando ObjectId
         evento = eventos_collection.find_one({'_id': ObjectId(event_id)})
         users_collection = db['users']
-        users = [{str("id"): user["_id"], str("completedName"): user["completedName"]} for user in users_collection.find()]
+        users = [{str("id"): user["_id"], str("completedName")                  : user["completedName"]} for user in users_collection.find()]
         if evento:
             evento['id'] = str(evento['_id'])
             # Eliminar el campo _id para evitar el error de plantilla
             del evento['_id']
-            #print(evento.get('descripcion', ''))
-            
-            user_ids = evento.get('speakers', [])        
-            speakers = [{str("nombreCompleto"): user["completedName"], str("relacion"): user["relationship"]} for user in users_collection.find({'_id': {'$in': [ObjectId(id) for id in user_ids]}})]
-            
-            user_ids = evento.get('assistants', [])        
-            assistants = [{str("nombreCompleto"): user["completedName"], str("relacion"): user["relationship"]} for user in users_collection.find({'_id': {'$in': [ObjectId(id) for id in user_ids]}})]
-            print(assistants)
+
+            user_ids = evento.get('speakers', [])
+            speakers = [{str("nombreCompleto"): user["completedName"], str("relacion"): user["relationship"]}
+                        for user in users_collection.find({'_id': {'$in': [ObjectId(id) for id in user_ids]}})]
+
+            user_ids = evento.get('assistants', [])
+            assistants = [{str("nombreCompleto"): user["completedName"], str("relacion"): user["relationship"]}
+                          for user in users_collection.find({'_id': {'$in': [ObjectId(id) for id in user_ids]}})]
+
+            # Obtener los comentarios asociados al evento
+            comentarios_collection = db['comments']
+            comentarios = list(comentarios_collection.find(
+                {'event_id': ObjectId(event_id)}))
+
             return render(request, 'informEvent.html', {
                 'titulo': evento.get('title', ''),
                 'categorias': evento.get('categories', []),
@@ -38,7 +51,10 @@ class EventDetailView(View):
                 'facultades': evento.get('facultades', []),
                 'conferencistas': speakers,
                 'asistentes': assistants,
-                'comentarios': evento.get('comments', []),
+                'comentarios': comentarios,
                 'users': users,
+                'event_id': event_id,  # Asegúrate de pasar el event_id aquí
             })
-
+        else:
+            # Redirige a la lista de eventos si el evento no existe
+            return redirect('evento')

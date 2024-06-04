@@ -51,13 +51,7 @@
 
     <div class="speakersContent">
         <h2>Conferencistas</h2>
-        <input type="text" id="speaker-searchInput" list="speakers-list">
-        <datalist id="speakers-list">
-            {% for user in users %}
-            <option value="{{user.completedName}}" data-user-id="{{user.id}}">       
-            {% endfor %}
-        </datalist>
-        <button id="addSpeaker"><i class="fas fa-pencil-alt"></i></button>
+        <button onclick="addSpeaker()"><i class="fas fa-pencil-alt"></i></button>
         {% for conferencista in conferencistas %}
         <li>
             <strong>Nombre:</strong> {{ conferencista.nombreCompleto }}<br>
@@ -68,10 +62,10 @@
 
     <div class="assistantsContent">
         <h2>Asistentes</h2>
-        <input type="text" id="assis-searchInput" list="assis-list">
-        <datalist id="assis-list">
+        <input type="text" id="searchInput" list="users-list">
+        <datalist id="users-list">
             {% for user in users %}
-            <option value="{{user.completedName}}" data-user-id="{{user.id}}">       
+            <option value="{{ user.completedName }}" data-user-id="{{ user.id }}">       
             {% endfor %}
         </datalist>
         <button id="addAssistant"><i class="fas fa-pencil-alt"></i></button>
@@ -85,7 +79,7 @@
 
     <div class="commentsContent">
         <h2>Comentarios</h2>
-        <a href="/añadir_comentario/" class="button"><i class="fas fa-pencil-alt"></i></a>
+        <a href="{% url 'añadir_comentario' event_id=event_id %}"><i class="fas fa-pencil-alt"></i></a>
         {% for comentario in comentarios %}
         <li>
             <strong>Comentario:</strong> {{ comentario.text }}<br>
@@ -100,8 +94,8 @@
         // Ahora puedes usar la variable `urlActual` para construir la nueva URL.
         // Por ejemplo:
         const idEvento = urlActual.split('/')[2]; // Reemplaza con el ID real del evento
-        const nombreUsuario = document.getElementById("assis-searchInput").value;
-        const opcionSeleccionada = document.querySelector(`#assis-list option[value="${nombreUsuario}"]`);
+        const nombreUsuario = document.getElementById("searchInput").value;
+        const opcionSeleccionada = document.querySelector(`#users-list option[value="${nombreUsuario}"]`);
         console.log(opcionSeleccionada);
         // Obtén el ID del usuario desde el atributo data-user-id
         const idUsuario = opcionSeleccionada.getAttribute("data-user-id");
@@ -109,24 +103,6 @@
         // Construye la nueva URL con el ID del usuario
         const nuevaUrl = `${window.location.origin}/anadir_asistente/${idEvento}/${idUsuario}`;
         console.log(nuevaUrl);
-        // Redirige a la nueva URL
-        window.location.replace(nuevaUrl);
-    });
-
-    document.getElementById("addSpeaker").addEventListener("click", function() {
-        const urlActual = window.location.pathname;
-        // Ahora puedes usar la variable `urlActual` para construir la nueva URL.
-        // Por ejemplo:
-        const idEvento = urlActual.split('/')[2]; // Reemplaza con el ID real del evento
-        const nombreUsuario = document.getElementById("speaker-searchInput").value;
-        console.log(nombreUsuario);
-        const opcionSeleccionada = document.querySelector(`#speakers-list option[value="${nombreUsuario}"]`);
-        console.log(opcionSeleccionada);
-        // Obtén el ID del usuario desde el atributo data-user-id
-        const idUsuario = opcionSeleccionada.getAttribute("data-user-id");
-
-        // Construye la nueva URL con el ID del usuario
-        const nuevaUrl = `${window.location.origin}/anadir_conferencista/${idEvento}/${idUsuario}`;
         // Redirige a la nueva URL
         window.location.replace(nuevaUrl);
     });

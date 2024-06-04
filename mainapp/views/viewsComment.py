@@ -10,14 +10,13 @@ from django.conf import settings
 
 class CommentView(View):
     form_class = CommentForm
-    initial = {}
     template_name = "addComent.html"
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
+    def get(self, request, event_id):
+        form = self.form_class(initial={'event_id': event_id})
         return render(request, self.template_name, {"form": form})
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, event_id):
         form = self.form_class(request.POST)
         if form.is_valid():
             solicitud = form.cleaned_data
@@ -29,11 +28,10 @@ class CommentView(View):
             # Crear documento
             event_comment = {
                 "text": solicitud.get('comentario'),
-                # Añade el ID del evento al comentario
-                "event_id": solicitud.get('event_id'),
+                "event_id": ObjectId(solicitud.get('event_id')),
             }
             collection_name.insert_one(event_comment)
 
-            return redirect("lugar_evento")
+            return redirect("evento_detalles", event_id=event_id)
 
         return render(request, self.template_name, {"form": form})
