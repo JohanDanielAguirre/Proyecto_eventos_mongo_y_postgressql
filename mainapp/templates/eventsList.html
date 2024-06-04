@@ -37,12 +37,7 @@
                     </div>
                 </div>
             </a>
-            <div id="info{{ evento.id }}" class="info" style="display: none;">
-                <h3>{{ evento.title }}</h3>
-                <div class="text">{{ evento.description }}</div>
-            </div>
         {% endfor %}
     </div>
 </div>
-<script src="{% static 'js/eventsScripts.js' %}"></script>
 {% endblock %}

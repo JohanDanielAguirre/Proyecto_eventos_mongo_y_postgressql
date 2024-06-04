@@ -21,7 +21,6 @@ class EventsView(View):
             evento['id'] = str(evento['_id'])
             # Eliminar el campo _id para evitar el error de plantilla
             del evento['_id']
-
         # Pasar los eventos a la plantilla
         client.close()
         return render(request, 'eventsList.html', {'eventos': eventos})
