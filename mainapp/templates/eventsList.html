@@ -21,7 +21,7 @@
 <div class="container">
     <div class="wrapperEvent">
         {% for evento in eventos %}
-            <a href="{% url 'event_detail' evento.id %}" class="event-link">
+            <a href="{% url 'evento_detalles' evento.id %}" class="event-link">
                 <div id="button{{ evento.id }}" type="button" class="event">
                     <div class="subcontainer1">
                         <div class="subcontainer2">
