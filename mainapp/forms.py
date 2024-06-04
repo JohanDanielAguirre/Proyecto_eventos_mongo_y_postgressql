@@ -6,7 +6,8 @@ from pymongo import MongoClient
 class EventForm(forms.Form):
     titulo = forms.CharField(max_length=100)
     descripcion = forms.CharField(max_length=100)
-    categoria = forms.CharField(max_length=100, label="Categoria (separada por , )")
+    categoria = forms.CharField(
+        max_length=100, label="Categoria (separada por , )")
     fecha = forms.DateInput()
 
     def __init__(self, *args, **kwargs):
@@ -55,3 +56,10 @@ class UserForm(forms.Form):
         self.fields["ciudad"] = forms.ChoiceField(
             choices=cities, label="Ciudad")
         client.close()
+
+
+class CommentForm(forms.Form):
+    comentario = forms.CharField(
+        widget=forms.Textarea, label='Comentario', max_length=240)
+    # Campo oculto para el ID del evento
+    event_id = forms.CharField(widget=forms.HiddenInput())

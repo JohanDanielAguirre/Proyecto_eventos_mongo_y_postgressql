@@ -97,7 +97,7 @@ body {
 .organizersContent button,
 .speakersContent button,
 .assistantsContent button,
-.commentsContent button {
+.commentsContent a {
   position: absolute;
   top: 0;
   right: 0;
@@ -118,3 +118,4 @@ body {
 .commentsContent button:hover {
   background-color: #218838; /* Verde más oscuro al pasar el ratón */
 }
+

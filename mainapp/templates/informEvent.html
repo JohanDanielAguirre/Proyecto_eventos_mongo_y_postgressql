@@ -72,35 +72,12 @@
 
     <div class="commentsContent">
         <h2>Comentarios</h2>
-        <button onclick="addComment()"><i class="fas fa-pencil-alt"></i></button>
+        <a href="/añadir_comentario/" class="button"><i class="fas fa-pencil-alt"></i></a>
         {% for comentario in comentarios %}
         <li>
-            <strong>Asistente:</strong> {{ comentario.userId }}<br>
             <strong>Comentario:</strong> {{ comentario.text }}<br>
         </li>
         {% endfor %}
     </div>
 </div>
-
-<script>
-    function addOrganizer() {
-        // Lógica para agregar un organizador
-        alert('Agregar Organizador');
-    }
-
-    function addSpeaker() {
-        // Lógica para agregar un conferencista
-        alert('Agregar Conferencista');
-    }
-
-    function addAssistant() {
-        // Lógica para agregar un asistente
-        alert('Agregar Asistente');
-    }
-
-    function addComment() {
-        // Lógica para agregar un comentario
-        alert('Agregar Comentario');
-    }
-</script>
 {% endblock %}
