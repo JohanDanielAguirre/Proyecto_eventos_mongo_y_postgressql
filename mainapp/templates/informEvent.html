@@ -1,69 +1,106 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Información del evento</title>
-    {% load static %}
+{% extends "root.html" %}
+{% block title %}Información del evento{% endblock title %}
+{% load static %}
+
+{% block static %}
+    {{ block.super }}
     <link rel="stylesheet" href="{% static 'CSS/eventInformStyle.css' %}">
-</head>
-<body>
-    <div class="generalContent">
-        <div class="titleContent">
-            <h2>{{ titulo }}</h2>
-            <p>{{ categorias | join:", " }}</p>
-            <p>{{ fecha }}</p>
-            <h3>{{ lugar }}</h3>
-        </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
 
-        <div class="descriptrionContent">
-            <h2>Descripción</h2>
-            <p>{{ descripcion }}</p>
-        </div>
+{% block actual_patch %}
+    <h2>Información del evento</h2>
+{% endblock actual_patch %}
 
-        <div class="organizersContent">
-            <h2>Organizadores</h2>
-            {% for programa in programas %}
-            <li>
-                <strong>Nombre:</strong> {{ programa.name }}<br>
-            </li>
-            {% endfor %}
-            {% for facultad in facultades %}
-            <li>
-                <strong>Nombre:</strong> {{ facultad.name }}<br>
-            </li>
-            {% endfor %}
-        </div>
+{% block breadcrumb-items %} 
+    <li class="breadcrumb-item">
+        <a href="">Información del evento</a>
+    </li>
+{% endblock breadcrumb-items %}
 
-        <div class="speakersContent">
-            <h2>Conferencistas</h2>
-            {% for conferencista in conferencistas %}
-            <li>
-                <strong>Nombre:</strong> {{ conferencista.fullname }}<br>
-                <strong>Relación:</strong> {{ conferencista.relationship }}<br>
-            </li>
-            {% endfor %}
-        </div>
-
-        <div class="assistantsContent">
-            <h2>Asistentes</h2>
-            {% for asistente in asistentes %}
-            <li>
-                <strong>Nombre:</strong> {{ asistente.fullname }}<br>
-                <strong>Relación:</strong> {{ asistente.relationship }}<br>
-            </li>
-            {% endfor %}
-        </div>
-
-        <div class="commentsContent">
-            <h2>Comentarios</h2>
-            {% for comentario in comentarios %}
-            <li>
-                <strong>Asistente:</strong> {{ comentario.userId }}<br>
-                <strong>Comentario:</strong> {{ comentario.text }}<br>
-            </li>
-            {% endfor %}
-        </div>
+{% block content %}
+<div class="generalContent">
+    <div class="titleContent">
+        <h2>{{ titulo }}</h2>
+        <button onclick="addSpeaker()"><i class="fas fa-pencil-alt"></i></button>
+        <p>{{ categorias | join:", " }}</p>
+        <p>{{ fecha }}</p>
+        <h3>{{ lugar }}</h3>
     </div>
-</body>
-</html>
+
+    <div class="descriptrionContent">
+        <h2>Descripción</h2>
+        <p>{{ descripcion }}</p>
+    </div>
+
+    <div class="organizersContent">
+        <h2>Organizadores</h2>
+        <button onclick="addOrganizer()"><i class="fas fa-pencil-alt"></i></button>
+        {% for programa in programas %}
+        <li>
+            <strong>Nombre:</strong> {{ programa.name }}<br>
+        </li>
+        {% endfor %}
+        {% for facultad in facultades %}
+        <li>
+            <strong>Nombre:</strong> {{ facultad.name }}<br>
+        </li>
+        {% endfor %}
+    </div>
+
+    <div class="speakersContent">
+        <h2>Conferencistas</h2>
+        <button onclick="addSpeaker()"><i class="fas fa-pencil-alt"></i></button>
+        {% for conferencista in conferencistas %}
+        <li>
+            <strong>Nombre:</strong> {{ conferencista.fullname }}<br>
+            <strong>Relación:</strong> {{ conferencista.relationship }}<br>
+        </li>
+        {% endfor %}
+    </div>
+
+    <div class="assistantsContent">
+        <h2>Asistentes</h2>
+        <button onclick="addAssistant()"><i class="fas fa-pencil-alt"></i></button>
+        {% for asistente in asistentes %}
+        <li>
+            <strong>Nombre:</strong> {{ asistente.fullname }}<br>
+            <strong>Relación:</strong> {{ asistente.relationship }}<br>
+        </li>
+        {% endfor %}
+    </div>
+
+    <div class="commentsContent">
+        <h2>Comentarios</h2>
+        <button onclick="addComment()"><i class="fas fa-pencil-alt"></i></button>
+        {% for comentario in comentarios %}
+        <li>
+            <strong>Asistente:</strong> {{ comentario.userId }}<br>
+            <strong>Comentario:</strong> {{ comentario.text }}<br>
+        </li>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function addOrganizer() {
+        // Lógica para agregar un organizador
+        alert('Agregar Organizador');
+    }
+
+    function addSpeaker() {
+        // Lógica para agregar un conferencista
+        alert('Agregar Conferencista');
+    }
+
+    function addAssistant() {
+        // Lógica para agregar un asistente
+        alert('Agregar Asistente');
+    }
+
+    function addComment() {
+        // Lógica para agregar un comentario
+        alert('Agregar Comentario');
+    }
+</script>
+{% endblock %}
