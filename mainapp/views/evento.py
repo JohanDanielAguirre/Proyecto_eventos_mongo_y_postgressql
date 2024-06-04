@@ -48,21 +48,15 @@ class EventForm(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             solicitud = form.cleaned_data
-            # <process form cleaned data>
             client = MongoClient(settings.MONGO_URI)
-
-            # First define the database name
             dbname = client.get_database('Proyecto_SID2')
-
-            # Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection
             collection_name = dbname["events"]
-
-            # let's create two documents
             event = {
                 "title": solicitud.get('titulo'),
                 "description": solicitud.get('descripcion'),
                 "date": solicitud.get('fecha'),
                 "place": solicitud.get('lugar'),
+                "categories": solicitud.get('categoria').split(','),
             }
             collection_name.insert_one(event)
             client.close()
