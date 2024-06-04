@@ -2,11 +2,10 @@ from django.views import View
 from django.shortcuts import redirect, render
 from mainapp.models import Event
 from mainapp.forms import EventForm
-from django.contrib import messages
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
 from pymongo import MongoClient
 from django.conf import settings
+from bson.objectid import ObjectId
+from mainapp.forms import EventForm
 
 
 class EventsView(View):
@@ -48,14 +47,23 @@ class EventForm(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             solicitud = form.cleaned_data
+
             client = MongoClient(settings.MONGO_URI)
+
             dbname = client.get_database('Proyecto_SID2')
+
             collection_name = dbname["events"]
+
+            places_collection = dbname["locations"]
+            place_id = solicitud.get('name')
+            place_info = places_collection.find_one(
+                {"_id": ObjectId(place_id)})
+
             event = {
                 "title": solicitud.get('titulo'),
                 "description": solicitud.get('descripcion'),
                 "date": solicitud.get('fecha'),
-                "place": solicitud.get('lugar'),
+                "place": place_info,
                 "categories": solicitud.get('categoria').split(','),
             }
             collection_name.insert_one(event)
