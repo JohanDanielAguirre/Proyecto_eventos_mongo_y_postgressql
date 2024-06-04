@@ -1,4 +1,6 @@
 from django import forms
+from django.conf import settings
+from pymongo import MongoClient
 
 class EventForm(forms.Form):
     titulo = forms.CharField(max_length=100)
@@ -14,7 +16,14 @@ class EventForm(forms.Form):
 class EventLocationForm(forms.Form):
     nombre = forms.CharField(max_length=100, label="Nombre del Lugar")
     direccion = forms.CharField(widget=forms.Textarea, label="Dirección")
-    ciudad = forms.CharField(max_length=100, label="Ciudad")
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        client = MongoClient(settings.MONGO_URI)
+        dbname = client.get_database('Proyecto_SID2')
+        collection = dbname["cities"]
+        cities = [(city["_id"], city["nombre"]) for city in collection.find()]
+        self.fields["ciudad"] = forms.ChoiceField(choices=cities, label="Ciudad")
+        client.close()
 
 class UserForm(forms.Form):
     id = forms.CharField(max_length=100)
