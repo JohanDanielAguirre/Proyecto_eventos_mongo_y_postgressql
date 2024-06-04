@@ -55,3 +55,14 @@ class UserForm(forms.Form):
         self.fields["ciudad"] = forms.ChoiceField(
             choices=cities, label="Ciudad")
         client.close()
+
+class searchUser(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        client = MongoClient(settings.MONGO_URI)
+        dbname = client.get_database('Proyecto_SID2')
+        collection = dbname["users"]
+        users = [(user["_id"], user["completedName"]) for user in collection.find()]
+        self.fields["Nombre de usurio"] = forms.ChoiceField(
+            choices=users, label="Nombre Completo")
+        client.close()

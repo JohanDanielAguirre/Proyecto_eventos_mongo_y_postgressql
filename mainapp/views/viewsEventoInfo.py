@@ -14,12 +14,19 @@ class EventDetailView(View):
 
         # Obtener el documento del evento usando ObjectId
         evento = eventos_collection.find_one({'_id': ObjectId(event_id)})
+        users_collection = db['users']
+        users = [{str("id"): user["_id"], str("completedName"): user["completedName"]} for user in users_collection.find()]
         if evento:
             evento['id'] = str(evento['_id'])
             # Eliminar el campo _id para evitar el error de plantilla
             del evento['_id']
-            print(evento.get('descripcion', ''))
-            # Pasar los campos del evento como contexto a la plantilla
+            #print(evento.get('descripcion', ''))
+            
+            # Obtener los ObjectId de usuarios desde el campo 'users' del evento
+            user_ids = evento.get('assistants', [])        
+            
+            assistants = [{str("nombreCompleto"): user["completedName"], str("relacion"): user["relationship"]} for user in users_collection.find({'_id': {'$in': [ObjectId(id) for id in user_ids]}})]
+            print(assistants)
             return render(request, 'informEvent.html', {
                 'titulo': evento.get('title', ''),
                 'categorias': evento.get('categories', []),
@@ -29,9 +36,8 @@ class EventDetailView(View):
                 'programas': evento.get('programs', []),
                 'facultades': evento.get('facultades', []),
                 'conferencistas': evento.get('conferencistas', []),
-                'asistentes': evento.get('asistentes', []),
+                'asistentes': assistants,
                 'comentarios': evento.get('comments', []),
+                'users': users,
             })
 
-        # Manejo del caso en que el evento no se encuentre
-        # Puedes agregar aquí una redirección o un mensaje de error

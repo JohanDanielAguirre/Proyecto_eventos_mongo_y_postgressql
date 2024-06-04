@@ -12,4 +12,5 @@ urlpatterns = [
     path('evento/<str:event_id>/', EventDetailView.as_view(), name='evento_detalles'),
     path('lugar_evento/', EventLocationView.as_view(), name='lugar_evento'),
     path('crear_usuario/', UserForm.as_view(), name='crear_usuario'),
+    path('anadir_asistente/<str:event_id>/<str:assistant_id>/', AddUserToEvent.as_view(), name='anadir_asistente'),
 ]
