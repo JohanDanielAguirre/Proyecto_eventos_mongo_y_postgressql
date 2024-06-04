@@ -23,7 +23,7 @@ class UserDetail(View):
         else:
             return HttpResponse("Usuario no encontrado")
         
-class EventForm(View):
+class UserForm(View):
     form_class = UserForm
     initial = {"key": "value"}
 
@@ -42,7 +42,7 @@ class EventForm(View):
             dbname = client.get_database('Proyecto_SID2')
 
             # Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection
-            collection_name = dbname["userss"]
+            collection_name = dbname["users"]
 
             # let's create two documents
             user = {

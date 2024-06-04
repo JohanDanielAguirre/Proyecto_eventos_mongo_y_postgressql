@@ -7,7 +7,6 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from pymongo import MongoClient
 from django.conf import settings
-from bson import ObjectId
 
 
 class EventsView(View):
@@ -40,7 +39,6 @@ class EventsView(View):
 class EventForm(View):
     form_class = EventForm
     initial = {"key": "value"}
-    template_name = "form_template.html"
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
