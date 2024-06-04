@@ -22,7 +22,7 @@ class EventLocationView(View):
             # Conectar a MongoDB
             my_client = MongoClient(settings.MONGO_URI)
             dbname = my_client.get_database('Proyecto_SID2')
-            collection_name = dbname["lugares_eventos"]
+            collection_name = dbname["locations"]
             cities_collection = dbname["cities"]
             ciudad_id = solicitud.get('ciudad')
             ciudad_info = cities_collection.find_one({"_id": ObjectId(ciudad_id)})
