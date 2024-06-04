@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views import View
 from pymongo import MongoClient
 from bson import ObjectId
@@ -62,3 +63,29 @@ class UserForm(View):
             return redirect("evento")
 
         return render(request, "userForm.html", {"form": form})
+
+class AddUserToEvent(View):
+    def get(self, request, *args, **kwargs):
+        # Obtén los parámetros del URL
+        id_evento = self.kwargs.get('event_id')
+        id_usuario = self.kwargs.get('assistant_id')
+        client = MongoClient(settings.MONGO_URI)
+        db = client.get_database('Proyecto_SID2')
+        eventos_collection = db['events']
+        # Busca el evento por su ID
+        evento = eventos_collection.find_one({'_id': ObjectId(id_evento)})
+
+        if evento:
+            print('Entreeeee!!!')
+            # Verifica si el atributo 'asistants' existe
+            if 'assistants' not in evento:
+                evento['assistants'] = []  # Crea la lista si no existe
+
+            # Agrega el id_usuario al array 'asistants'
+            evento['assistants'].append(ObjectId(id_usuario))
+
+            # Actualiza el evento en la base de datos
+            eventos_collection.update_one({'_id': ObjectId(id_evento)}, {'$set': evento})
+        
+        url = reverse('evento_detalles', kwargs={'event_id': id_evento})
+        return redirect(url)

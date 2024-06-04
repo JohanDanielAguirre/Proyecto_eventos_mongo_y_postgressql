@@ -63,3 +63,16 @@ class CommentForm(forms.Form):
         widget=forms.Textarea, label='Comentario', max_length=240)
     # Campo oculto para el ID del evento
     event_id = forms.CharField(widget=forms.HiddenInput())
+
+
+class searchUser(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        client = MongoClient(settings.MONGO_URI)
+        dbname = client.get_database('Proyecto_SID2')
+        collection = dbname["users"]
+        users = [(user["_id"], user["completedName"])
+                 for user in collection.find()]
+        self.fields["Nombre de usurio"] = forms.ChoiceField(
+            choices=users, label="Nombre Completo")
+        client.close()
