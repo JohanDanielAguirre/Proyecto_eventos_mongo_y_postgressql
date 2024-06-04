@@ -114,3 +114,28 @@ class AddSpeakersToEvent(View):
         
         url = reverse('evento_detalles', kwargs={'event_id': id_evento})
         return redirect(url)
+    
+class AddOrganizerToEvent(View):
+    def get(self, request, *args, **kwargs):
+        # Obtén los parámetros del URL
+        id_evento = self.kwargs.get('event_id')
+        id_programa = self.kwargs.get('program_id')
+        client = MongoClient(settings.MONGO_URI)
+        db = client.get_database('Proyecto_SID2')
+        eventos_collection = db['events']
+        # Busca el evento por su ID
+        evento = eventos_collection.find_one({'_id': ObjectId(id_evento)})
+
+        if evento:
+            # Verifica si el atributo 'asistants' existe
+            if 'organizers' not in evento:
+                evento['organizers'] = []  # Crea la lista si no existe
+
+            # Agrega el id_usuario al array 'asistants'
+            evento['organizers'].append(ObjectId(id_programa))
+
+            # Actualiza el evento en la base de datos
+            eventos_collection.update_one({'_id': ObjectId(id_evento)}, {'$set': evento})
+        
+        url = reverse('evento_detalles', kwargs={'event_id': id_evento})
+        return redirect(url)
