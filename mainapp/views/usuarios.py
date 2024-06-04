@@ -4,26 +4,27 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from pymongo import MongoClient
 from bson import ObjectId
-
 from mainapp.forms import UserForm
 
 
 class UserDetail(View):
     template_name = 'userInformation.html'
-    
+
     def get(self, request, *args, **kwargs):
         user_id = self.kwargs.get("id")  # Obtén el valor del parámetro "id"
         client = MongoClient(settings.MONGO_URI)
         db = client.get_database('Proyecto_SID2')
         collection = db['users']
-        user = collection.find_one({"_id": user_id})  # Busca el usuario por su _id
+        # Busca el usuario por su _id
+        user = collection.find_one({"_id": user_id})
         client.close()
         if user:
             # Renderiza la información del usuario en tu plantilla HTML
             return render(request, self.template_name, {"user": user})
         else:
             return HttpResponse("Usuario no encontrado")
-        
+
+
 class UserForm(View):
     form_class = UserForm
     initial = {"key": "value"}
@@ -46,7 +47,8 @@ class UserForm(View):
             collection = dbname["users"]
             cities_collection = dbname["cities"]
             ciudad_id = solicitud.get('ciudad')
-            ciudad_info = cities_collection.find_one({"_id": ObjectId(ciudad_id)})
+            ciudad_info = cities_collection.find_one(
+                {"_id": ObjectId(ciudad_id)})
             user = {
                 "id": solicitud.get('id'),
                 "userName": solicitud.get('nombreUsuario'),
