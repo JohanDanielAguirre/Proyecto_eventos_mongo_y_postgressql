@@ -14,11 +14,12 @@ urlpatterns = [
     path('lugar_evento/', EventLocationView.as_view(), name='lugar_evento'),
     path('crear_usuario/', UserForm.as_view(), name='crear_usuario'),
 
-    path('añadir_comentario/', CommentView.as_view, name='añadir_comentario'),
+    path('añadir_comentario/<str:event_id>/',
+         CommentView.as_view(), name='añadir_comentario'),
 
     path('anadir_asistente/<str:event_id>/<str:assistant_id>/',
          AddUserToEvent.as_view(), name='anadir_asistente'),
-    
+
     path('anadir_conferencista/<str:event_id>/<str:assistant_id>/',
          AddSpeakersToEvent.as_view(), name='anadir_conferencista'),
 
