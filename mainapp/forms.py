@@ -27,8 +27,8 @@ class EventLocationForm(forms.Form):
 
 class UserForm(forms.Form):
     id = forms.CharField(max_length=100)
-    nombreUsuario = forms.CharField(max_length=100)
-    nombreCompleto = forms.CharField(max_length=100)
+    nombreUsuario = forms.CharField(max_length=100, label='Nombre de Usuario')
+    nombreCompleto = forms.CharField(max_length=100, label='Nombre Completo')
     tipoRelacion = forms.CharField(label='Tipo de realción', widget=forms.Select(
         choices=[('profesor', 'Profesor'), ('estudiante', 'Estudiante'), ('graduado', 'Graduado')
                  , ('empresario', 'Empresario'), ('administrativo', 'Administrativo'), ('directivo', 'Directivo')]))
