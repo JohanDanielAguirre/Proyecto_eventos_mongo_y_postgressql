@@ -18,5 +18,8 @@ urlpatterns = [
 
     path('anadir_asistente/<str:event_id>/<str:assistant_id>/',
          AddUserToEvent.as_view(), name='anadir_asistente'),
+    
+    path('anadir_conferencista/<str:event_id>/<str:assistant_id>/',
+         AddSpeakersToEvent.as_view(), name='anadir_conferencista'),
 
 ]

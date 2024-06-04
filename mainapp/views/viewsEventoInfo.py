@@ -22,9 +22,10 @@ class EventDetailView(View):
             del evento['_id']
             #print(evento.get('descripcion', ''))
             
-            # Obtener los ObjectId de usuarios desde el campo 'users' del evento
-            user_ids = evento.get('assistants', [])        
+            user_ids = evento.get('speakers', [])        
+            speakers = [{str("nombreCompleto"): user["completedName"], str("relacion"): user["relationship"]} for user in users_collection.find({'_id': {'$in': [ObjectId(id) for id in user_ids]}})]
             
+            user_ids = evento.get('assistants', [])        
             assistants = [{str("nombreCompleto"): user["completedName"], str("relacion"): user["relationship"]} for user in users_collection.find({'_id': {'$in': [ObjectId(id) for id in user_ids]}})]
             print(assistants)
             return render(request, 'informEvent.html', {
@@ -35,7 +36,7 @@ class EventDetailView(View):
                 'descripcion': evento.get('description', ''),
                 'programas': evento.get('programs', []),
                 'facultades': evento.get('facultades', []),
-                'conferencistas': evento.get('conferencistas', []),
+                'conferencistas': speakers,
                 'asistentes': assistants,
                 'comentarios': evento.get('comments', []),
                 'users': users,
