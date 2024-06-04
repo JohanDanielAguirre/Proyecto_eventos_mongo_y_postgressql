@@ -11,4 +11,5 @@ urlpatterns = [
     path("usuario/<str:id>/", UserDetail.as_view(), name="usuario_detalles"),
     path('evento/<str:event_id>/', EventDetailView.as_view(), name='evento_detalles'),
     path('lugar_evento/', EventLocationView.as_view(), name='lugar_evento'),
+    path('crear_usuario/', UserForm.as_view(), name='crear_usuario'),
 ]
