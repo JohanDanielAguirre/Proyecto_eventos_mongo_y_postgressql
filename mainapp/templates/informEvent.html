@@ -22,10 +22,11 @@
 <div class="generalContent">
     <div class="titleContent">
         <h2>{{ titulo }}</h2>
-        <button onclick="addSpeaker()"><i class="fas fa-pencil-alt"></i></button>
-        <p>{{ categorias | join:", " }}</p>
-        <p>{{ fecha }}</p>
         <h3>{{ lugar }}</h3>
+        <button onclick="addSpeaker()"><i class="fas fa-pencil-alt"></i></button>
+        <p class="categorias">{{ categorias | join:", " }}</p>
+        <p class="fecha">{{ fecha }}</p>
+        
     </div>
 
     <div class="descriptrionContent">
