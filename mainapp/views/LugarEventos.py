@@ -1,3 +1,4 @@
+from bson import ObjectId
 from django.shortcuts import render, redirect
 from django.views import View
 from mainapp.forms import EventLocationForm
@@ -22,12 +23,14 @@ class EventLocationView(View):
             my_client = MongoClient(settings.MONGO_URI)
             dbname = my_client.get_database('Proyecto_SID2')
             collection_name = dbname["lugares_eventos"]
-
+            cities_collection = dbname["cities"]
+            ciudad_id = solicitud.get('ciudad')
+            ciudad_info = cities_collection.find_one({"_id": ObjectId(ciudad_id)})
             # Crear documento
             event_location = {
                 "name": solicitud.get('nombre'),
                 "adress": solicitud.get('direccion'),
-                "city": solicitud.get('ciudad'),
+                "city": ciudad_info,
             }
             collection_name.insert_one(event_location)
 

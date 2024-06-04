@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from pymongo import MongoClient
+from bson import ObjectId
 
 from mainapp.forms import UserForm
 
@@ -41,19 +42,20 @@ class UserForm(View):
             # First define the database name
             dbname = client.get_database('Proyecto_SID2')
 
-            # Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection
-            collection_name = dbname["users"]
-
-            # let's create two documents
+            # Now get/create collection name
+            collection = dbname["users"]
+            cities_collection = dbname["cities"]
+            ciudad_id = solicitud.get('ciudad')
+            ciudad_info = cities_collection.find_one({"_id": ObjectId(ciudad_id)})
             user = {
                 "id": solicitud.get('id'),
                 "userName": solicitud.get('nombreUsuario'),
                 "completedName": solicitud.get('nombreCompleto'),
                 "relationship": solicitud.get('tipoRelacion'),
                 "email": solicitud.get('email'),
-                "ciudad": solicitud.get('ciudad'),
+                "ciudad": ciudad_info,
             }
-            collection_name.insert_one(user)
+            collection.insert_one(user)
             client.close()
             return redirect("evento")
 
